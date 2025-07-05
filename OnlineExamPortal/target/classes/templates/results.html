@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Exam Results</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to right, #e0f7fa, #f1f8e9);
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+
+    nav {
+      background-color: #006A71;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+
+    .nav-right {
+      display: flex;
+      gap: 5rem;
+      align-items: center;
+
+    }
+
+    .nav-link {
+      color: white;
+      text-decoration: none;
+      font-size: 1rem;
+      font-weight: 500;
+
+    }
+
+    .nav-link:hover {
+      text-shadow: 0 0 6px rgba(255, 255, 255, 0.6);
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 50px auto;
+      padding: 20px;
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    }
+
+    h1 {
+      text-align: center;
+      color: #2b6777;
+      font-size: 1.8rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      position: relative;
+      margin-bottom: 30px;
+      padding-bottom: 0.5rem;
+    }
+
+    /* Elegant accent underline */
+    h1::after {
+      content: '';
+      display: block;
+      width: 80px;
+      height: 3px;
+      background-color: #48A6A7;
+      margin: 0.5rem auto 0;
+      border-radius: 2px;
+    }
+
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    th,
+    td {
+      padding: 15px;
+      text-align: center;
+    }
+
+    th {
+      background-color: #e6f7f1;
+      color: #2b6777;
+      font-size: 16px;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+
+    tr:hover {
+      background-color: #e2f0ff;
+    }
+
+    .score {
+      font-weight: bold;
+      color: #0f5132;
+    }
+
+    .back-button {
+      display: inline-block;
+      margin-top: 20px;
+      background: #006A71;
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: background 0.3s ease;
+    }
+
+    .back-button:hover {
+      background: #3d8e83;
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- Navbar -->
+<nav>
+  <div class="nav-left">
+    <a style="font-size: 1.7rem;" href="#" class="nav-link"><strong> <i class="fas fa-graduation-cap"></i>
+      ExamVault</strong></a>
+  </div>
+  <div class="nav-right">
+  </div>
+</nav>
+
+<div class="container">
+  <h1 style="text-align: center;">Your Exam Results</h1>
+  <table>
+    <thead>
+    <tr>
+      <th>Exam Title</th>
+      <th>Date Attempted</th>
+      <th>Score</th>
+      <th>Correct</th>
+      <th>Wrong</th>
+      <th>Total Questions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="attempt : ${attempts}">
+      <td th:text="${attempt.exam.title}"></td>
+      <td th:text="${#temporals.format(attempt.endTime, 'dd MMM yyyy HH:mm')}"></td>
+      <td class="score" th:text="${attempt.score}"></td>
+      <td th:text="${attempt.correctAnswers}"></td>
+      <td th:text="${attempt.wrongAnswers}"></td>
+      <td th:text="${attempt.totalQuestions}"></td>
+    </tr>
+    </tbody>
+  </table>
+  <div style="text-align: center;">
+    <a href="/user-dashboard" class="back-button">Back to Dashboard</a>
+  </div>
+</div>
+</body>
+
+</html>

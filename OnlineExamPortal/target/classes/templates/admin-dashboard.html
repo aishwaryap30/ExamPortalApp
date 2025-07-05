@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Examination Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+
+            background-color: #FCF8F3;
+            color: #333;
+        }
+
+        nav {
+            background-color: #006A71;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+
+        .nav-right {
+            display: flex;
+            gap: 5rem;
+            align-items: center;
+
+        }
+
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 500;
+
+        }
+          .nav-link:hover {
+            text-shadow: 0 0 6px rgba(255, 255, 255, 0.6);
+        }
+
+        .hero {
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 3rem 5%;
+            background-color: #FCF8F3;
+        }
+
+        .wave {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 12rem;
+            background: #9ACBD0;
+            clip-path: ellipse(120% 100% at 70% 0%);
+            z-index: 1;
+        }
+
+        .hero-content {
+            flex: 1;
+            z-index: 2;
+            padding-left: 7rem;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+
+        }
+
+        .hero-content p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            max-width: 500px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn-primary {
+            background-color: #0f2d45;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 30px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+         .btn-primary:hover {
+            background-color: #006A71;
+            /* Matching with your website’s color palette */
+            transform: scale(1.05);
+            /* Slight pop-up */
+        }
+
+        .blended-img {
+            width: 100%;
+            max-width: 500px;
+            opacity: 0.95;
+            mix-blend-mode: multiply;
+            /* or soft-light, overlay, screen */
+        }
+
+
+        .hero-image {
+            flex: 1;
+            z-index: 2;
+            text-align: center;
+
+        }
+
+
+        .feature-overview {
+            padding: 3rem 2rem;
+            text-align: center;
+            background-color: #FCF8F3;
+        }
+
+        .main-title {
+            font-size: 2rem;
+            color: #006A71;
+            font-weight: 380;
+            margin-bottom: 0.8rem;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin: 0 auto 3rem;
+            color: #444;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 2rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .feature-icon-box {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+             position: relative;
+        }
+
+         .feature-icon-box:hover {
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 0 12px 25px rgba(0, 106, 113, 0.4);
+            /* Teal glow */
+            animation: pulseGlow 0.6s ease forwards;
+        }
+
+        .feature-icon-box img {
+            width: 50px;
+            margin-bottom: 0.8rem;
+        }
+
+        .feature-icon-box h3 {
+            font-size: 1.1rem;
+            margin: 0.5rem 0;
+            color: #006A71;
+        }
+
+        .feature-icon-box p {
+            font-size: 0.95rem;
+            color: #555;
+        }
+
+
+        .section-heading {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-top: 3rem;
+        }
+
+        .section-subtitle {
+            font-size: 1rem;
+            color: #48A6A7;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-title {
+            font-size: 2.4rem;
+            color: #006A71;
+            margin: 0;
+            position: relative;
+        }
+
+        .section-title .highlight {
+            background: #9ACBD0;
+            padding: 0 8px;
+            border-radius: 8px;
+            color: #004D52;
+        }
+
+        .section-underline {
+            width: 60px;
+            height: 4px;
+            background: #48A6A7;
+            margin: 1rem auto 0;
+            border-radius: 2px;
+        }
+
+        .how-it-works-container {
+            display: flex;
+            gap: 4rem;
+            align-items: flex-start;
+            justify-content: center;
+            flex-wrap: wrap;
+            max-width: 1300px;
+            margin: auto;
+        }
+
+        .workflow {
+            display: flex;
+            flex-direction: column;
+            gap: 3rem;
+            flex: 1 1 60%;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 4rem;
+            text-align: left;
+        }
+
+        .step.reverse {
+            flex-direction: row-reverse;
+        }
+
+        .step-icon {
+            background-color: #48A6A7;
+            border-radius: 50%;
+            width: 90px;
+            height: 90px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .step-icon span {
+            position: absolute;
+            top: -12px;
+            right: -12px;
+            background: #006A71;
+            color: white;
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            font-weight: bold;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .step-icon img {
+            width: 40px;
+            height: 40px;
+        }
+
+        .step-content h3 {
+            font-size: 1.4rem;
+            margin-bottom: 0.7rem;
+            color: #006A71;
+        }
+
+        .step-content p {
+            font-size: 1rem;
+            color: #444;
+            max-width: 500px;
+        }
+
+        /* Question mark image styling */
+        .question-mark-illustration {
+            flex: 1 1 30%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .question-mark-illustration img {
+            width: 100%;
+            max-width: 450px;
+            opacity: 0.95;
+            transform: scale(1.05);
+        }
+
+
+        .roles-header {
+            text-align: center;
+            margin-bottom: 1rem;
+            position: relative;
+            overflow: hidden;
+            padding: 3rem 1rem;
+        }
+
+        .background-word {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 6rem;
+            font-weight: 800;
+            color: rgba(0, 106, 113, 0.05);
+            z-index: 0;
+            pointer-events: none;
+            user-select: none;
+            font-family: 'Poppins', sans-serif;
+            letter-spacing: 2px;
+            white-space: nowrap;
+        }
+
+        .roles-heading {
+            font-size: 2.7rem;
+            color: #006A71;
+            font-weight: 700;
+            position: relative;
+            z-index: 2;
+            margin-bottom: 0.5rem;
+            padding-top: 5rem;
+        }
+
+        .roles-subheading {
+            font-size: 1.1rem;
+            color: #555;
+            max-width: 600px;
+            margin: 0 auto;
+            z-index: 2;
+            position: relative;
+        }
+
+        .roles-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .role-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-left 0.3s ease;
+            border-left: 6px solid #006A71;
+            display: flex;
+            align-items: flex-start;
+            gap: 2rem;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+        }
+
+        .role-card:hover {
+            transform: translateY(-6px) scale(1.01);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+            border-left: 6px solid #004D52;
+        }
+
+        .role-icon img {
+            width: 80px;
+            height: 80px;
+        }
+
+        .role-info h3 {
+            color: #006A71;
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .role-info p {
+            color: #333;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .role-info ul {
+            list-style: none;
+            padding-left: 1rem;
+        }
+
+        .role-info ul li {
+            margin-bottom: 0.5rem;
+            position: relative;
+            padding-left: 1.2rem;
+        }
+
+        .role-info ul li::before {
+            content: '✔';
+            position: absolute;
+            left: 0;
+            color: #48A6A7;
+            font-weight: bold;
+        }
+
+
+        @media (max-width: 768px) {
+            .role-card {
+                flex-direction: column;
+                text-align: center;
+                align-items: center;
+            }
+
+            .role-info ul {
+                text-align: left;
+            }
+        }
+
+        .why-choose-modern {
+            background: #006A71;
+            color: #fff;
+            margin-top: 3rem;
+            padding: 5rem 2rem;
+            font-family: 'Poppins', sans-serif;
+
+        }
+
+        .why-content {
+            max-width: 1200px;
+            margin: auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .why-text {
+            flex: 1 1 55%;
+        }
+
+        .why-text h2 {
+            font-size: 2.7rem;
+            font-weight: 700;
+            line-height: 1.3;
+            margin-bottom: 1.5rem;
+        }
+
+        .why-text h2 span {
+            color: #9ACBD0;
+        }
+
+        .why-text p {
+            font-size: 1rem;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            color: #F2EFE7;
+        }
+
+        .cta-btn {
+             background: #ffffff;
+
+            color: #006A71;
+            font-weight: 600;
+            padding: 0.9rem 1.6rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.3s ease;
+        }
+
+        .cta-btn:hover {
+            background: #F2EFE7;
+        }
+
+        .why-highlights {
+            margin-top: 2rem;
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            font-size: 0.95rem;
+        }
+
+        .why-highlights div {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .why-highlights i {
+            color: #48A6A7;
+            font-size: 1.1rem;
+        }
+
+        .why-image {
+            flex: 1 1 40%;
+            text-align: center;
+        }
+
+        .why-image img {
+            max-width: 320px;
+            border-radius: 12px;
+            filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.2));
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .why-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .why-text {
+                flex: 1 1 100%;
+            }
+
+            .why-image {
+                margin-top: 2.5rem;
+            }
+
+            .cta-btn {
+                margin-top: 1rem;
+            }
+
+            .why-highlights {
+                justify-content: center;
+            }
+        }
+
+        .institution-section {
+            padding: 5rem 2rem;
+            background: #FCF8F3;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .institution-container {
+            max-width: 1300px;
+            margin: auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 3rem;
+        }
+
+        .institution-image {
+            flex: 1 1 40%;
+            text-align: center;
+        }
+
+        .institution-image img {
+            max-width: 100%;
+            width: 350px;
+            filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.1));
+        }
+
+        .institution-text {
+            flex: 1 1 55%;
+        }
+
+        .institution-heading {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+
+        .heading-background {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+            font-size: 5rem;
+            font-weight: 900;
+            color: rgba(0, 106, 113, 0.05);
+            z-index: 0;
+            pointer-events: none;
+            user-select: none;
+            letter-spacing: 2px;
+        }
+
+        .institution-heading h2 {
+            position: relative;
+            z-index: 2;
+            font-size: 2.7rem;
+            color: #006A71;
+            font-weight: 700;
+            line-height: 1.3;
+        }
+
+        .highlight-word {
+            background: #9ACBD0;
+            color: #004D52;
+            padding: 0 10px;
+            border-radius: 8px;
+            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .institution-text p {
+            font-size: 1.05rem;
+            color: #444;
+            margin-bottom: 2rem;
+            max-width: 600px;
+        }
+
+        .institution-features {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .institution-point {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1rem;
+            color: #333;
+        }
+
+        .institution-point i {
+            color: #006A71;
+            font-size: 1.2rem;
+        }
+
+        .cta-btn {
+            background: #006A71;
+            color: white;
+            font-weight: 600;
+            padding: 0.9rem 1.6rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.3s ease;
+        }
+
+        .cta-btn:hover {
+            background: #004D52;
+        }
+
+        footer {
+            background-color: #006A71;
+            color: white;
+            text-align: center;
+            padding: 1.5rem 1rem;
+            margin-top: 2rem;
+        }
+
+
+        /* --------- */
+    </style>
+</head>
+
+<body>
+<!-- Navbar -->
+<nav>
+    <div class="nav-left">
+        <a style="font-size: 1.7rem;" href="#" class="nav-link"><strong> <i class="fas fa-graduation-cap"></i>
+            ExamVault</strong></a>
+    </div>
+    <div class="nav-right">
+
+
+        <a th:href="@{/admin/exams/manage-user}" class="nav-link">Manage Users</a>
+        <a th:href="@{/admin/exams}" class="nav-link">Manage Exams</a>
+        <a th:href="@{/admin/exams/show-results}"  class="nav-link">Show Results</a>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<div class="hero">
+    <div class="wave"></div>
+    <div class="hero-content">
+        <h1>Simply Powerful<br>Online Exams</h1>
+        <p>ExamVault is a next-gen exam portal that empowers educators to create and manage assessments effortlessly
+            while giving students a smooth, real-time exam experience with instant results and intelligent feedback.
+        </p>
+        <div class="hero-buttons">
+            <button class="btn-primary"> Access Exam Panel</button>
+        </div>
+
+    </div>
+    <div class="hero-image">
+        <img th:src="@{/images/imagee.png}" alt="Hero" class="blended-img">
+    </div>
+</div>
+
+<!-- FEATURES -->
+<section class="feature-overview">
+    <h2 class="main-title">Everything You Need to Deliver Smart, Secure Exams</h2>
+    <p class="subtitle">ExamVault brings together simplicity and intelligence so you can create, conduct, and analyze
+        exams effortlessly — with zero technical hassle.</p>
+
+    <div class="feature-grid">
+
+        <div class="feature-icon-box" data-aos="fade-up">
+            <img src="https://cdn-icons-png.flaticon.com/512/942/942748.png" alt="PDF Icon">
+            <h3>Create Exams in Minutes</h3>
+            <p>Admins can create exams with a defined number of questions and answers.</p>
+        </div>
+
+        <div class="feature-icon-box" data-aos="fade-up">
+            <img src="https://cdn-icons-png.flaticon.com/512/2784/2784445.png" alt="Custom Exam">
+            <h3>Student Dashboard</h3>
+            <p>Students attempt exams with countdown timers and intuitive next/previous navigation.</p>
+        </div>
+
+        <div class="feature-icon-box" data-aos="fade-up">
+            <img src="https://cdn-icons-png.flaticon.com/512/1055/1055687.png" alt="Secure Mode">
+            <h3>Auto Submission & Instant Result</h3>
+            <p>Exams auto-submit on timeout with immediate feedback and score analysis.</p>
+        </div>
+
+        <div class="feature-icon-box" data-aos="fade-up">
+            <img src="https://cdn-icons-png.flaticon.com/512/3039/3039434.png" alt="Collect Exams">
+            <h3>Per-User Result Tracking</h3>
+            <p>Each student's responses and results are securely saved and tracked per exam.</p>
+        </div>
+
+        <div class="feature-icon-box" data-aos="fade-up">
+            <img src="https://cdn-icons-png.flaticon.com/512/2921/2921222.png" alt="Auto Mark">
+            <h3>Multiple Exam Creation by Admin</h3>
+            <p>Admins can create and manage multiple exams, with full control over availability and questions.</p>
+        </div>
+
+        <div class="feature-icon-box" data-aos="fade-up">
+            <img src="https://cdn-icons-png.flaticon.com/512/753/753345.png" alt="User Tracking">
+            <h3>No Resubmission Allowed</h3>
+            <p>Each student can attempt an exam only once. Submissions are final to ensure exam integrity and
+                fairness.</p>
+        </div>
+
+    </div>
+</section>
+
+<!-- How it works  -->
+<section style="background-color:  #FCF8F3;">
+    <div class="section-heading" data-aos="fade-up">
+        <p class="section-subtitle">Step-by-step guide</p>
+        <h2 class="section-title">
+            How It <span class="highlight">Works</span>
+        </h2>
+        <div class="section-underline"></div>
+    </div>
+
+
+    <div class="how-it-works-container">
+
+        <div class="workflow">
+            <div class="step" data-aos="fade-right">
+                <div class="step-icon">
+                    <span>1</span>
+                    <img src="https://cdn-icons-png.flaticon.com/512/942/942748.png" alt="Create Exam">
+                </div>
+                <div class="step-content">
+                    <h3>Create & Manage Exams</h3>
+                    <p>Admins can create MCQ-based exams with a fixed number of questions, set time limit and manage
+                        user access.</p>
+
+                </div>
+            </div>
+
+            <div class="step reverse" data-aos="fade-left">
+                <div class="step-icon">
+                    <span>2</span>
+                    <img src="https://cdn-icons-png.flaticon.com/512/3135/3135755.png" alt="Students Join">
+                </div>
+                <div class="step-content">
+                    <h3>Students Join</h3>
+                    <p>Students sign in, browse available exams, and start live exams with built-in timers and
+                        navigation.</p>
+                </div>
+            </div>
+
+            <div class="step" data-aos="fade-right">
+                <div class="step-icon">
+                    <span>3</span>
+
+                    <img src="https://cdn-icons-png.flaticon.com/512/3397/3397284.png" alt="Submit Exam">
+                </div>
+                <div class="step-content">
+                    <h3>Submit & Auto Evaluate</h3>
+                    <p>Exams auto-submit when time ends. Answers are evaluated instantly and securely.</p>
+                </div>
+            </div>
+
+            <div class="step reverse" data-aos="fade-left">
+                <div class="step-icon">
+                    <span>4</span>
+                    <img src="https://cdn-icons-png.flaticon.com/512/7890/7890455.png" alt="Results">
+                </div>
+                <div class="step-content">
+                    <h3>View Results</h3>
+                    <p>Students get instant results. Admins track individual performance with analytics and reports.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Question mark illustration -->
+        <div class="question-mark-illustration" data-aos="zoom-in">
+            <img th:src="@{/images/Questions.png}" alt="Question Mark">
+        </div>
+
+    </div>
+</section>
+
+
+<!-- roles -->
+<section style="background-color:  #FCF8F3;" class="user-roles-section" id="roles">
+    <div class="roles-header" data-aos="fade-up">
+        <div class="background-word">Roles</div>
+        <h2 class="roles-heading">Meet Our Users</h2>
+        <p class="roles-subheading">Two powerful roles — one seamless platform for learning and evaluation.</p>
+    </div>
+
+    <div class="roles-wrapper">
+        <!-- Admin Role -->
+        <div class="role-card admin" data-aos="fade-right">
+            <div class="role-icon">
+                <img src="https://cdn-icons-png.flaticon.com/512/4086/4086679.png" alt="Admin Icon">
+            </div>
+            <div class="role-info">
+                <h3>Admin</h3>
+                <p>Admins are the engine of ExamVault. They create structured MCQ exams with time limits, manage users,
+                    and track individual results with ease.</p>
+                <ul>
+                    <li>Create multiple MCQ-based exams</li>
+                    <li>Control exam time, duration & access</li>
+                    <li>Manage students and monitor performance</li>
+                    <li>View full analytics & reports</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Student Role -->
+        <div class="role-card student" data-aos="fade-left">
+            <div class="role-icon">
+                <img src="https://cdn-icons-png.flaticon.com/512/3135/3135755.png" alt="Student Icon">
+            </div>
+            <div class="role-info">
+                <h3>Student</h3>
+                <p>Students explore live exams, answer questions with built-in timers, and get instant feedback on
+                    performance.</p>
+                <ul>
+                    <li>Browse and attempt available exams</li>
+                    <li>Live timer, question navigation</li>
+                    <li>Auto-submit & immediate results</li>
+                    <li>Track past performance</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- why choose us -->
+<section class="why-choose-modern" id="why-us">
+    <div class="why-content">
+        <div class="why-text">
+            <h2>
+                why choose <span>ExamVault?</span> <br>
+            </h2>
+            <h3>
+
+                The <span>smarter</span> way to create and attempt online exams
+            </h3>
+            <p>
+
+                ExamVault makes exam creation, management, and evaluation fast, secure, and intuitive for both students
+                and admins.
+                No complex setup, just real-time results and effortless performance tracking.
+            </p>
+            <button class="cta-btn">Get Started for Free</button>
+            <div class="why-highlights">
+                <div><i class="fas fa-check-circle"></i> Live Exam with Timer</div>
+                <div><i class="fas fa-check-circle"></i> Auto Submission & Scoring</div>
+                <div><i class="fas fa-check-circle"></i> No Setup Needed</div>
+            </div>
+        </div>
+        <div class="why-image">
+            <img th:src="@{/images/lastimg.png}" alt="Exam Illustration" />
+        </div>
+    </div>
+</section>
+
+
+<!-- goal-->
+<section class="institution-section">
+    <div class="institution-container">
+        <div class="institution-image">
+            <img th:src="@{/images/college.png}" alt="Institution Illustration">
+        </div>
+
+        <div class="institution-text">
+            <div class="institution-heading">
+                <span class="heading-background">Institutions</span>
+                <h2>Empowering <span class="highlight-word">Institutions</span></h2>
+            </div>
+            <p>
+                ExamVault is designed for educational organizations that need a smart, self-managed online examination
+                system.
+                We provide your team with an admin portal to create exams, add students, and track performance — all
+                without
+                any technical help.
+            </p>
+
+            <div class="institution-features">
+                <div class="institution-point">
+                    <i class="fas fa-user-cog"></i>
+                    <span>Admin access for your institution</span>
+                </div>
+                <div class="institution-point">
+                    <i class="fas fa-tasks"></i>
+                    <span>Full Student & Exam Control</span>
+                </div>
+                <div class="institution-point">
+                    <i class="fas fa-file-alt"></i>
+                    <span>Analyze Submissions & Reports</span>
+                </div>
+                <div class="institution-point">
+                    <i class="fas fa-chart-line"></i>
+                    <span>View performance insights</span>
+                </div>
+
+                <div class="institution-point">
+                    <i class="fas fa-plug"></i>
+                    <span>No Setup Required — Ready to Use</span>
+                </div>
+            </div>
+            <button class="cta-btn">Partner with Us</button>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer>
+    <p>&copy; 2025 ExamVault. All rights reserved.</p>
+</footer>
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+    AOS.init({
+        duration: 800,
+        once: false,
+        offset: 100
+    });
+</script>
+</body>
+
+</html>

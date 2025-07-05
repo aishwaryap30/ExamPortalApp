@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Available Exams</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <style>
+        body {
+          font-family: 'Segoe UI', sans-serif;
+          background: linear-gradient(to right, #e3f2fd, #e8f5e9);
+          margin: 0;
+          padding: 0;
+        }
+
+        nav {
+          background-color: #006A71;
+          padding: 1rem 2rem;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+
+
+        .nav-right {
+          display: flex;
+          gap: 5rem;
+          align-items: center;
+
+        }
+
+        .nav-link {
+          color: white;
+          text-decoration: none;
+          font-size: 1rem;
+          font-weight: 500;
+
+        }
+
+        .nav-link:hover {
+          text-shadow: 0 0 6px rgba(255, 255, 255, 0.6);
+        }
+
+        .container {
+          max-width: 900px;
+          margin: 40px auto;
+          padding: 12px;
+        }
+
+        h2 {
+          text-align: center;
+          color: #006A71;
+          font-size: 2rem;
+          font-weight: 600;
+          position: relative;
+          display: inline-block;
+          margin: 2rem auto;
+          padding-bottom: 0.5rem;
+        }
+
+        /* Decorative underline */
+        h2::after {
+          content: "";
+          width: 50px;
+          height: 3px;
+          background-color: #48A6A7;
+          position: absolute;
+          left: 50%;
+          bottom: 0;
+          transform: translateX(-50%);
+          border-radius: 2px;
+        }
+
+
+        .exam-card {
+          background-color: #ffffff;
+          padding: 20px;
+          margin-bottom: 20px;
+          border-radius: 12px;
+          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.07);
+          transition: transform 0.2s ease;
+        }
+
+        .exam-card:hover {
+          transform: translateY(-4px);
+        }
+
+        .exam-card h3 {
+          color: #006A71;
+          margin-bottom: 0.5rem;
+        }
+
+        .exam-card p {
+          color: #424242;
+          margin: 5px 0;
+        }
+
+        .nav-left {
+          display: flex;
+          gap: 1rem;
+          align-items: center;
+        }
+
+        .nav-btn {
+          background-color: #4fbfa8;
+          color: white;
+          padding: 10px 16px;
+          border: none;
+          border-radius: 8px;
+          text-decoration: none;
+          font-weight: 600;
+          transition: background-color 0.3s ease;
+        }
+
+        .nav-btn:hover {
+          background-color: #3aa992;
+        }
+
+
+
+        .start-btn {
+          display: inline-block;
+          margin-top: 12px;
+          padding: 10px 16px;
+          background-color: #006A71;
+          color: white;
+          font-weight: 600;
+          text-decoration: none;
+          border-radius: 8px;
+          transition: background-color 0.3s ease;
+        }
+
+        .start-btn:hover {
+          background-color: #0d8069;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- Navbar -->
+<nav>
+    <div class="nav-left">
+        <a style="font-size: 1.7rem;" href="#" class="nav-link"><strong> <i class="fas fa-graduation-cap"></i>
+            ExamVault</strong></a>
+    </div>
+    <div class="nav-right">
+
+        <a th:href="@{/user-dashboard}" class="nav-link">Back to Dashboard</a>
+    </div>
+</nav>
+
+<div class="container">
+    <div style="text-align: center;">
+        <h2>Available Exams</h2>
+    </div>
+
+    <div th:each="exam : ${exams}" class="exam-card">
+        <h3 th:text="${exam.title}">Exam Title</h3>
+        <p th:text="${exam.description}">Exam Description</p>
+        <p>Duration: <span th:text="${exam.duration} + ' min'">60 min</span></p>
+
+        <form th:action="@{'/student/exams/start/' + ${exam.examId}}" method="post">
+            <input type="hidden" name="userId" th:value="${userId}" />
+            <button type="submit" class="start-btn">📝 Start Test</button>
+        </form>
+
+    </div>
+</div>
+
+</body>
+
+</html>

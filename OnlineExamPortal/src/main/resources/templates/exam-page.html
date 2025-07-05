@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Live Exam</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <style>
+        body {
+          font-family: 'Segoe UI', sans-serif;
+          background: linear-gradient(135deg, #d9f3f2, #f0f9ff);
+          padding: 0;
+          margin: 0;
+        }
+
+
+        nav {
+          background-color: #006A71;
+          padding: 1rem 2rem;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+
+
+        .nav-right {
+          display: flex;
+          gap: 5rem;
+          align-items: center;
+
+        }
+
+        .nav-link {
+          color: white;
+          text-decoration: none;
+          font-size: 1rem;
+          font-weight: 500;
+
+        }
+
+        .nav-link:hover {
+          text-shadow: 0 0 6px rgba(255, 255, 255, 0.6);
+        }
+
+
+        .exam-container {
+          max-width: 900px;
+          margin: 2rem auto;
+          background: white;
+          padding: 2rem;
+          border-radius: 12px;
+          box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+          text-align: center;
+          color: #2b6777;
+        }
+
+        .question {
+          margin-bottom: 1.5rem;
+          color: #2b6777;
+        }
+
+        .options label {
+          display: block;
+          margin: 8px 0;
+          color: #2b6777;
+        }
+
+        .navigation {
+          display: flex;
+          justify-content: space-between;
+          margin-top: 2rem;
+        }
+
+        .nav-btn {
+          padding: 10px 18px;
+          background: #2b6777;
+          color: white;
+          border: none;
+          border-radius: 8px;
+          cursor: pointer;
+          font-weight: bold;
+          font-size: 0.9rem;
+        }
+
+        .nav-btn:hover {
+          background: #3189a1;
+        }
+
+        #timer {
+          font-size: 1.2rem;
+          color: #c62828;
+          text-align: right;
+          font-weight: bold;
+        }
+
+        .question-panel {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 10px;
+          margin-top: 1rem;
+          justify-content: center;
+        }
+
+        .q-btn {
+          width: 35px;
+          height: 35px;
+          border: none;
+          border-radius: 50%;
+          font-weight: bold;
+          cursor: pointer;
+        }
+
+        .q-attempted {
+          background-color: #a5d6a7;
+        }
+
+        .q-unattempted {
+          background-color: #ef9a9a;
+        }
+
+        .submit-btn {
+          margin-top: 1rem;
+          display: block;
+          width: 100%;
+          background: #2b6777;
+        }
+    </style>
+</head>
+
+<body>
+
+<nav>
+    <div class="nav-left">
+        <a style="font-size: 1.7rem;" href="#" class="nav-link"><strong> <i class="fas fa-graduation-cap"></i>
+            ExamVault</strong></a>
+    </div>
+    <div class="nav-right">
+    </div>
+</nav>
+
+<div class="exam-container">
+    <div id="timer">Time Left: --:--</div>
+
+    <h2 th:text="${exam.title}">Exam Title</h2>
+
+    <form id="examForm" method="post" th:action="@{/student/exams/navigate}">
+        <div class="question">
+            <h3 th:text="'Q' + (${index}+1) + '. ' + ${question.questionText}">Question?</h3>
+        </div>
+
+        <div class="options">
+            <label>
+                <input type="radio" name="selectedOption" value="A" th:checked="${selectedOption == 'A'}" required>
+                <span th:text="${question.optionA}"></span>
+            </label>
+            <label>
+                <input type="radio" name="selectedOption" value="B" th:checked="${selectedOption == 'B'}">
+                <span th:text="${question.optionB}"></span>
+            </label>
+            <label>
+                <input type="radio" name="selectedOption" value="C" th:checked="${selectedOption == 'C'}">
+                <span th:text="${question.optionC}"></span>
+            </label>
+            <label>
+                <input type="radio" name="selectedOption" value="D" th:checked="${selectedOption == 'D'}">
+                <span th:text="${question.optionD}"></span>
+            </label>
+        </div>
+
+        <input type="hidden" name="currentIndex" th:value="${index}" />
+        <input type="hidden" name="remainingTime" id="remainingTime" />
+
+        <div class="navigation">
+            <button class="nav-btn" type="submit" name="direction" value="previous" th:if="${index > 0}">← Previous</button>
+
+            <button class="nav-btn" type="submit" name="direction" value="next" th:if="${index + 1 < total}">Next →</button>
+        </div>
+
+        <!-- Question Navigation Panel (Replace your old <form th:each="..."> block with this) -->
+        <div class="question-panel">
+            <div th:each="i : ${#numbers.sequence(0, total - 1)}">
+                <button type="submit" th:name="'jumpIndex'" th:value="${i}" th:text="${i + 1}"
+                        th:class="'q-btn ' + (${selectedAnswers[question.id]} != null ? 'q-attempted' : 'q-unattempted')">
+                </button>
+            </div>
+        </div>
+
+
+        <button type="submit" name="direction" value="submit" class="nav-btn submit-btn">📝 Submit Exam</button>
+    </form>
+</div>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    let seconds = [[${ session.remainingTime != null ? session.remainingTime : exam.duration * 60 }]];
+    const timerEl = document.getElementById("timer");
+    const hiddenTimeField = document.getElementById("remainingTime");
+
+    function startTimer() {
+      const interval = setInterval(() => {
+        if (seconds <= 0) {
+          clearInterval(interval);
+          document.getElementById("autoSubmitForm").submit(); // ✅ submit to final result page
+        } else {
+          const m = Math.floor(seconds / 60);
+          const s = seconds % 60;
+          timerEl.textContent = `Time Left: ${m}:${s < 10 ? '0' : ''}${s}`;
+          hiddenTimeField.value = seconds;
+          seconds--;
+        }
+      }, 1000);
+    }
+
+    startTimer();
+    /*]]>*/
+</script>
+
+
+<!-- Add this just before </body> -->
+<form id="autoSubmitForm" method="get" th:action="@{/student/exams/submit}" style="display:none;"></form>
+
+</body>
+
+</html>

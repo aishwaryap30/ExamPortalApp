@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Add Questions</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <style>
+        body {
+          font-family: 'Segoe UI', sans-serif;
+          background: linear-gradient(to right, #e0f7fa, #f1f8e9);
+          margin: 0;
+          padding: 0;
+        }
+
+        nav {
+          background-color: #006A71;
+          padding: 1rem 2rem;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+
+
+        .nav-right {
+          display: flex;
+          gap: 5rem;
+          align-items: center;
+
+        }
+
+        .nav-link {
+          color: white;
+          text-decoration: none;
+          font-size: 1rem;
+          font-weight: 500;
+
+        }
+
+        .nav-link:hover {
+          text-shadow: 0 0 6px rgba(255, 255, 255, 0.6);
+        }
+
+        .container {
+          max-width: 900px;
+          margin: 40px auto;
+          padding: 30px;
+          background-color: #fff;
+          border-radius: 16px;
+          box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        h2 {
+          text-align: center;
+          color: #004d40;
+          margin-bottom: 2rem;
+        }
+
+        h4 {
+          color: #006A71;
+          margin-top: 1.5rem;
+          margin-bottom: 0.5rem;
+        }
+
+        form {
+          display: flex;
+          flex-direction: column;
+        }
+
+        input[type="text"] {
+          padding: 10px;
+          margin-bottom: 12px;
+          border-radius: 6px;
+          border: 1px solid #ccc;
+          font-size: 1rem;
+          width: 100%;
+          box-sizing: border-box;
+        }
+
+        button {
+          background-color:#006A71;
+          color: white;
+          padding: 12px;
+          border: none;
+          border-radius: 8px;
+          font-size: 1rem;
+          font-weight: 600;
+          cursor: pointer;
+          transition: background-color 0.3s ease;
+          margin-top: 20px;
+        }
+
+        button:hover {
+          background-color: #00897b;
+        }
+    </style>
+</head>
+
+<body>
+
+
+<nav>
+    <div class="nav-left">
+        <a style="font-size: 1.7rem;" href="#" class="nav-link"><strong> <i class="fas fa-graduation-cap"></i>
+            ExamVault</strong></a>
+    </div>
+    <div class="nav-right">
+        <a th:href="@{/admin/exams}" class="nav-link">← Back to Exams</a>
+
+    </div>
+</nav>
+
+<div class="container">
+    <h2>Add Questions to Exam</h2>
+
+    <form th:action="@{'/admin/exams/' + ${examId} + '/add-questions'}" th:object="${questionWrapper}" method="post">
+        <div th:each="question, stat : *{questions}">
+            <h4>Question [[${stat.index} + 1]]</h4>
+
+
+            <input type="text" th:field="*{questions[__${stat.index}__].questionText}" placeholder="Question Text"
+                   required />
+            <input type="text" th:field="*{questions[__${stat.index}__].optionA}" placeholder="Option A" required />
+            <input type="text" th:field="*{questions[__${stat.index}__].optionB}" placeholder="Option B" required />
+            <input type="text" th:field="*{questions[__${stat.index}__].optionC}" placeholder="Option C" required />
+            <input type="text" th:field="*{questions[__${stat.index}__].optionD}" placeholder="Option D" required />
+            <input type="text" th:field="*{questions[__${stat.index}__].correctAnswer}"
+                   placeholder="Correct Option (A/B/C/D)" required />
+
+        </div>
+
+        <button type="submit">💾 Save All Questions</button>
+    </form>
+</div>
+
+</body>
+
+</html>
