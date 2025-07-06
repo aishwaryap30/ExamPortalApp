@@ -39,6 +39,12 @@ public class UserController {
         //return "redirect:/login";  // Redirect to login page after successful registration
         return "user-dashboard";
     }
+// new code I am adding 
+    @GetMapping("/user-dashboard")
+     public String showUserDashboard() {
+    return "user-dashboard";  // Thymeleaf template name
+    }
+
 
     @GetMapping("/dashboard")
     public String dashboard() {
