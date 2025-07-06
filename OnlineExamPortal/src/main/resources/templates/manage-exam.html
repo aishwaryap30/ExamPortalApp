@@ -110,6 +110,71 @@
         .delete-btn:hover {
           background-color: #c62828;
         }
+
+       
+@media (max-width: 768px) {
+  nav {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .nav-right {
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: 1rem;
+    width: 100%;
+  }
+
+  .nav-link {
+    font-size: 0.95rem;
+  }
+
+  .container {
+    padding: 20px;
+    margin: 20px 10px;
+  }
+
+  h2 {
+    font-size: 1.4rem;
+  }
+
+  .create-btn {
+    font-size: 0.95rem;
+    padding: 8px 14px;
+  }
+
+  table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  th, td {
+    font-size: 0.95rem;
+    padding: 10px;
+  }
+
+  .delete-btn {
+    font-size: 0.9rem;
+    padding: 6px 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  nav {
+    padding: 1rem;
+  }
+
+  .nav-link {
+    font-size: 0.9rem;
+  }
+
+  .create-btn {
+    width: 100%;
+    text-align: center;
+  }
+}
     </style>
 </head>
 
@@ -128,7 +193,7 @@
     </div>
 </nav>
 
-<div class="container">
+<div style="overflow-x: auto;" class="container">
     <h2>All Exams</h2>
 
     <a th:href="@{/admin/exams/create}" class="create-btn">➕ Create New Exam</a>
