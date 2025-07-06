@@ -122,6 +122,69 @@
     .back-button:hover {
       background: #3d8e83;
     }
+
+     @media (max-width: 768px) {
+      .container {
+        padding: 15px;
+        margin: 20px auto;
+      }
+
+      h1 {
+        font-size: 1.4rem;
+      }
+
+      table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+      }
+
+      .nav-link {
+        font-size: 0.95rem;
+      }
+
+      .back-button {
+        padding: 8px 16px;
+        font-size: 0.95rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      nav {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.6rem;
+      }
+
+      .nav-left {
+        width: 100%;
+      }
+
+      .nav-right {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        gap: 1rem;
+      }
+
+      .nav-link {
+        font-size: 0.9rem;
+      }
+
+      .container {
+        padding: 10px;
+      }
+
+      th,
+      td {
+        padding: 10px;
+      }
+    }
+
+    nav {
+      flex-wrap: wrap;
+    }
   </style>
 </head>
 
@@ -137,7 +200,7 @@
   </div>
 </nav>
 
-<div class="container">
+<div style="overflow-x: auto;" class="container">
   <h1 style="text-align: center;">Your Exam Results</h1>
   <table>
     <thead>
