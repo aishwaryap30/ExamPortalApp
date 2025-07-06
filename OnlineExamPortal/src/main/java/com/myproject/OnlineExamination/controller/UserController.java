@@ -32,19 +32,11 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public String registerUser(@ModelAttribute("user") User user) {
-        // Save the user to the database using the UserService
-        System.out.println(user);
+    public String registerUser(@ModelAttribute("user") User user,  HttpSession session) {
         userService.saveUser(user);
-        //return "redirect:/login";  // Redirect to login page after successful registration
-        return "user-dashboard";
+        session.setAttribute("user", user);
+        return "redirect:/user-dashboard";
     }
-// new code I am adding 
-    @GetMapping("/user-dashboard")
-     public String showUserDashboard() {
-    return "user-dashboard";  // Thymeleaf template name
-    }
-
 
     @GetMapping("/dashboard")
     public String dashboard() {
